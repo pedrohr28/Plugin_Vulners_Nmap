@@ -6,7 +6,7 @@
 - sudo apt install nmap
 ## Para o funcionamento correto é necessário a instalação do Vulners pelo link do github abaixo:
 - https://github.com/vulnersCom/nmap-vulners
-## Após a instalação do Vulners é necessário as instalações das bibliotecas a seguir:
+## Após a instalação do Vulners é necessário as instalações das bibliotecas/dependências a seguir:
 - Python: Pandas, Psutil, Json e Time
 - Lua: Json, Socket e Http
 ## Após a instalação do Vulners, do Python e das bibliotecas listadas acima, é necessário substituir o arquivo original vulners.nse pelo vulners.nse disponibilizado neste GitHub.
