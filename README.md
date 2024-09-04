@@ -14,7 +14,7 @@
 - nmap --script=vulners --script-args metrics=<carcteristica1-peso1:carcteristica2-peso2>, diretory=<diretorio_modulo> <ip_maquina_target>
 ## Exemplo sintaxe do argumento metrics:
 - metrics=lbl_exploits_delta_days-10:delta_days_patch-2
-## Exemplo sintaxe do argumento diretory:
+## Exemplo sintaxe do argumento diretory onde está localilzado o plugin PluginVulners:
 - diretory=/home/kali/Desktop/Plugin_Vulners_Nmap/PluginVulners.py
 ## É necessário a ativação do argumento pelo comando:
 - --script-args
