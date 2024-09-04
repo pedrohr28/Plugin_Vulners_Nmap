@@ -1,9 +1,12 @@
 # Plugin_Vulners_Nmap
 ## Intalação completa para o funcionamento do PluginVulners no Sistema operacional Kali Linux
-- Instalação do Nmap
-- Para o funcionamento correto é necessário a instalação do Vulners pelo link do github abaixo:
+- Instalar o Nmap
+- sudo apt update
+- sudo apt upgrade
+- sudo apt install nmap
+## Para o funcionamento correto é necessário a instalação do Vulners pelo link do github abaixo:
 - https://github.com/vulnersCom/nmap-vulners
-- Após a instalação do Vulners é necessário as instalações das bibliotecas a seguir:
+## Após a instalação do Vulners é necessário as instalações das bibliotecas a seguir:
 - Python: Pandas, Psutil, Json e Time
 - Lua: Json, Socket e Http
 ## Após a instalação do Vulners, do Python e das bibliotecas listadas acima, é necessário substituir o arquivo original vulners.nse pelo vulners.nse disponibilizado neste GitHub.
