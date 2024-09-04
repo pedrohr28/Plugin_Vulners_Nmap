@@ -91,11 +91,13 @@ if len(sys.argv) > 1:
                 if metrica[0] in base_dados.columns: 
                     for caract in base_dados[metrica[0]]:
                         colunas.append(float(caract))
+                    #Valor min da caracteristica
                     metrica.append(float(min(colunas)))
+                    #Valor max da caracteristica
                     metrica.append(float(max(colunas)))
         #Recalculo da Vulnerabilidades            
         new_data = processar(dados,metricas_parse,base_dados)
-        #Ordenação de forma descrecentes 
+        #Ordenação na forma descrecentes 
         new_data = sorted(new_data, key=itemgetter('cvss'),reverse=True)
 else:
     for i in dados:
