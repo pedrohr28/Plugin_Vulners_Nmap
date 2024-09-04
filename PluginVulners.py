@@ -49,7 +49,7 @@ def processar(vulnerabilidades,metricas_parse,base_dados):
     
 #Convertendo vulnerabilidades encontradas em string    
 json_string = sys.argv[1]
-dados = json.loads(json_string)
+vulnerabilidades = json.loads(json_string)
 process = psutil.Process(os.getpid())
 cpu_start = process.cpu_times()
 cpu_percent_before = process.cpu_percent(interval=None)
@@ -82,7 +82,7 @@ if len(sys.argv) > 1:
     #mapeando diretorio da base de dados
     local_data = local_data + 'vrex.csv'     
             
-    if isinstance(dados, list):
+    if isinstance(vulnerabilidades, list):
         base_dados = pd.read_csv(local_data)
         #Encontrando o max e min das métricas na base de dados
         for metrica in metricas_parse:
@@ -96,11 +96,11 @@ if len(sys.argv) > 1:
                     #Valor max da caracteristica
                     metrica.append(float(max(colunas)))
         #Recalculo da Vulnerabilidades            
-        new_data = processar(dados,metricas_parse,base_dados)
+        new_data = processar(vulnerabilidades,metricas_parse,base_dados)
         #Ordenação na forma descrecentes 
         new_data = sorted(new_data, key=itemgetter('cvss'),reverse=True)
 else:
-    for i in dados:
+    for i in vulnerabilidades:
         new_data.append(i)
 
 #Calculo Final memoria, tempo
