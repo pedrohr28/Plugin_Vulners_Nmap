@@ -10,23 +10,23 @@ from operator import itemgetter
 
 new_data = []
 
-def processar(arquivo,metricas_parse,df):
+def processar(vulnerabilidades,metricas_parse,base_dados):
     resultados = []
     #Percorrer as vulnerabilidades encontradas
-    for item in arquivo:
+    for vulnerabilidade in vulnerabilidades:
         #Encontrar a vulnerabilidade na base de dados
-        cve_id = re.findall(r'CVE.\d{4}.\d+',item['id'])
+        cve_id = re.findall(r'CVE.\d{4}.\d+',vulnerabilidade['id'])
         if cve_id:
-            cve_spec  = df[df['cve'] == cve_id[0]]
+            cve_spec  = base_dados[base_dados['cve'] == cve_id[0]]
             if len(cve_spec.iloc[:]) > 0:
                 average_score = sum_score = count_score = 0.00
                 coluna_econtrada = ''
-                #Percorrer as métricas inseridas pelo usuário
+                #Percorrer as métricas/caracteristicas inseridas pelo usuário
                 for metrica in metricas_parse:
                     if len(metrica) >= 4 and metrica[0] in cve_spec.columns:                          
                                 nova_metrica = cve_spec[metrica[0]]
                                 for line in nova_metrica:
-                                    #Calculo formula da normalização
+                                    #verificação dos valores numericos
                                     if isinstance(line, int) or isinstance(line, float):
                                         divisao = abs(float(metrica[3]) - float(metrica[2]))
                                         if divisao != 0:
@@ -41,21 +41,23 @@ def processar(arquivo,metricas_parse,df):
                         #Calculo da nova pontuação  
                         average_score = (sum_score/count_score)*100
                         average_score = round(average_score,1)
-                        item['cvss'] = average_score
-        resultados.append(item)
+                        #Atribuição da nova pontução ao cvss
+                        vulnerabilidade['cvss'] = average_score
+        resultados.append(vulnerabilidade)
     return resultados
     
     
-    
+#Convertendo vulnerabilidades encontradas em string    
 json_string = sys.argv[1]
 dados = json.loads(json_string)
 process = psutil.Process(os.getpid())
 cpu_start = process.cpu_times()
 cpu_percent_before = process.cpu_percent(interval=None)
 if len(sys.argv) > 1:
+    #Caracterisiticas/metricas
     metricas = sys.argv[2]
     metricas_parse = []
-    #Dividindo as metricas e pesos em lista diferentes
+    #Dividindo as metricas/caracterisiticas e pesos em lista diferentes
     metricas_nova = metricas.split(":")
     for metrica in metricas_nova:
         cast = str(metrica)
@@ -63,6 +65,7 @@ if len(sys.argv) > 1:
         if len(var_split) == 2: #somente parametros de pares ... ex: metrica e peso
                 metricas_parse.append(var_split)
 
+    #Diretorio do arquivo
     local = str(sys.argv[0])
     tam = len(local)
     remover_python_string = ''
@@ -76,21 +79,22 @@ if len(sys.argv) > 1:
     remover_python_string = ''.join(reversed(remover_python_string))
     local_data = local.replace(remover_python_string, '')
 
+    #mapeando diretorio da base de dados
     local_data = local_data + 'vrex.csv'     
             
     if isinstance(dados, list):
-        colunas_df = pd.read_csv(local_data)
+        base_dados = pd.read_csv(local_data)
         #Encontrando o max e min das métricas na base de dados
         for metrica in metricas_parse:
             colunas = []
             if len(metrica) >= 2:
-                if metrica[0] in colunas_df.columns: 
-                    for item in colunas_df[metrica[0]]:
-                        colunas.append(float(item))
+                if metrica[0] in base_dados.columns: 
+                    for caract in base_dados[metrica[0]]:
+                        colunas.append(float(caract))
                     metrica.append(float(min(colunas)))
                     metrica.append(float(max(colunas)))
         #Recalculo da Vulnerabilidades            
-        new_data = processar(dados,metricas_parse,colunas_df)
+        new_data = processar(dados,metricas_parse,base_dados)
         #Ordenação de forma descrecentes 
         new_data = sorted(new_data, key=itemgetter('cvss'),reverse=True)
 else:
