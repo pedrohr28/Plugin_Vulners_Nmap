@@ -13,7 +13,7 @@
 - Exemplo do local onde fica localizado o arquivo no kali Linux: /usr/share/nmap/scripts/
 ##  Após a substituição do arquivo original:
 - Copie o arquivo PluginVulners.py deste repositório para um diretório local e insira o arquivo da base de dados nesse mesmo diretório.
-- O arquivo da base de dados deve ter o nome vrex.csv, esse arquvio está contido nesse github compactado como arquivo .zip.
+- O arquivo da base de dados deve ter o nome vrex.csv, esse arquvio está contido nesse repositório github, compactado como arquivo .zip.
 ## Exemplo de sintaxe para a execução do Vulners configurado com o PluginVulners:
 - nmap --script=vulners --script-args metrics=<carcteristica1-peso1:carcteristica2-peso2>, diretory=<diretorio_modulo> <ip_maquina_target>
 ## Exemplo sintaxe do argumento metrics:
